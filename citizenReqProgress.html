@@ -1,0 +1,130 @@
+{% extends 'citizenHome.html' %}
+{% block content %}
+
+<style>
+  .request-table {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 25px 55px rgba(0,0,0,0.08);
+  }
+
+  .request-table thead {
+    background: linear-gradient(135deg, #0ea5e9, #2563eb);
+    color: #ffffff;
+  }
+
+  .request-table th {
+    padding: 14px;
+    font-size: 14.5px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .request-table td {
+    padding: 12px;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  .request-table tbody tr:hover {
+    background-color: #f0f9ff;
+  }
+
+  .status-badge {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+  }
+
+  .status-requested { background: #fde68a; color: #92400e; }
+  .status-approved  { background: #bfdbfe; color: #1e40af; }
+  .status-delivery  { background: #bbf7d0; color: #065f46; }
+  .status-completed { background: #86efac; color: #065f46; }
+
+</style>
+
+<section class="section light-background py-5">
+
+  <!-- Title -->
+  <div class="container text-center mb-4">
+    <h2 class="fw-bold">My Water Requests</h2>
+    <p class="text-muted">Track the status of your water delivery requests</p>
+  </div>
+
+  <div class="container">
+    <div class="table-responsive request-table">
+      <table class="table table-bordered table-hover mb-0">
+
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Liters</th>
+            <th>Date</th>
+            <th>Authority</th>
+            <th>Delivery</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for i in data %}
+          <tr>
+
+            <td class="text-center">{{ forloop.counter }}</td>
+
+            <td>{{ i.location }}</td>
+
+            <td>{{ i.description|truncatechars:40 }}</td>
+
+            <td class="text-center">
+              <strong>{{ i.ltr }}</strong> L
+            </td>
+
+            <td class="text-center">{{ i.date|date:"d M Y" }}</td>
+
+            <td class="text-center">
+              {% if i.authority %}
+                {{ i.authority.name }}
+              {% else %}
+                <span class="text-muted">Not Assigned</span>
+              {% endif %}
+            </td>
+
+            <td class="text-center">
+              {% if i.delivery %}
+                {{ i.delivery.name }}
+              {% else %}
+                <span class="text-muted">Not Assigned</span>
+              {% endif %}
+            </td>
+
+            <td class="text-center">
+              {% if i.delivery_status  %}
+                <span class="status-badge status-completed">{{ i.delivery_status }}</span>
+              {% else %}
+                <span class="status-badge status-requested">Requested</span>
+              {% endif %}
+            </td>
+
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="8" class="text-center text-muted py-4">
+              You haven’t requested water yet
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'adminHome.html' %} 
+{% block content %}
+
+<style>
+  .request-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .request-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15);
+  }
+
+  .badge-status {
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .Requested { background: #f59e0b; }
+  .InProgress { background: #3b82f6; }
+  .Completed { background: #10b981; }
+</style>
+
+<section class="section light-background py-5">
+
+  <!-- Title -->
+  <div class="container text-center mb-5" data-aos="fade-up">
+    <h2 class="fw-bold">Water Quality Test Requests</h2>
+    <p class="text-muted">All water quality requests submitted by citizens</p>
+  </div>
+
+  <div class="container">
+    <div class="row g-4">
+
+      {% for i in data %}
+      <div class="col-lg-6 col-md-6" data-aos="fade-up">
+        <div class="request-card bg-white p-4 rounded shadow-sm border-start border-4 border-primary h-100 d-flex flex-column">
+
+          <!-- Details -->
+          <div class="flex-grow-1">
+            <p class="mb-2"><strong> Source Type:</strong> {{ i.source_type }}</p>
+            <p class="mb-2"><strong> Location:</strong> {{ i.location }}</p>
+            <p class="mb-2"><strong> Description:</strong> {{ i.description }}</p>
+            <p class="mb-2"><strong> Purpose:</strong> {{ i.purpose }}</p>
+            <p class="mb-2"><strong> Requested On:</strong> {{ i.date|date:"d M Y, H:i" }}</p>
+            <p class="mb-2">
+              <strong>👤 Citizen:</strong>
+              {{ i.user.name }}<br>
+              {{ i.user.email }} | {{ i.user.phone }}
+            </p>
+          </div>
+
+          <!-- Authority Assignment -->
+          {% if i.authority == None %}
+          <div class="mt-4 border-top pt-3">
+            <form method="post" class="d-flex gap-2 align-items-end">
+              {% csrf_token %}
+              
+              <div class="flex-grow-1">
+                <label class="form-label fw-semibold">Assign Authority</label>
+                <select name="authority_id" class="form-select" required>
+                  <option value="" disabled selected>Choose Authority</option>
+                  {% for a in auth %}
+                  <option value="{{ a.id }}">{{ a.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <input type="hidden" name="request_id" value="{{ i.id }}">
+
+              <button type="submit" class="btn btn-primary px-4">
+                Assign
+              </button>
+            </form>
+          </div>
+          {% else %}
+          <div class="mt-4">
+            <span class="badge bg-success px-3 py-2">
+             Authority Assigned: {{ i.authority.name }}
+            </span>
+          </div>
+          {% endif %}
+
+          <!-- Status -->
+          <div class="mt-3">
+            <span class="badge-status {{ i.status }}">
+             Status: {{ i.status }}
+            </span>
+          </div>
+
+          <!-- Report -->
+          {% if i.report %}
+          <div class="mt-3">
+            <a href="static/media/{{ i.report }}" target="_blank" class="btn btn-outline-success btn-sm">
+              View Report
+            </a>
+          </div>
+          {% endif %}
+
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center">
+        <p class="fs-5 text-muted">No water quality requests found</p>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,114 @@
+
+{% extends 'RepairHome.html' %}
+{% block content %}
+
+<style>
+  .history-table {
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+
+  .history-table thead {
+    background: linear-gradient(135deg, #0d6efd, #084298);
+    color: #fff;
+  }
+
+  .history-table th {
+    padding: 14px;
+    font-size: 15px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .history-table td {
+    padding: 12px;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  .history-table tbody tr:hover {
+    background-color: #f1f5ff;
+  }
+
+  .complaint-img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+</style>
+
+<section class="section light-background py-5">
+
+  <!-- Title -->
+  <div class="container text-center mb-4">
+    <h2 class="fw-bold">Completed Work History</h2>
+    <p class="text-muted">All successfully completed complaints</p>
+  </div>
+
+  <div class="container">
+    <div class="table-responsive history-table">
+      <table class="table table-bordered table-hover mb-0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Photo</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Citizen</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for i in data %}
+          <tr>
+            <td class="text-center">{{ forloop.counter }}</td>
+
+            <td class="text-center">
+              {% if i.photo %}
+                <a href="static/media/{{ i.photo }}" target="_blank">
+                  <img src="static/media/{{ i.photo }}" class="complaint-img">
+                </a>
+              {% else %}
+                <span class="text-muted">No Image</span>
+              {% endif %}
+            </td>
+
+            <td>{{ i.location }}</td>
+
+            <td>{{ i.description|truncatechars:50 }}</td>
+
+            <td>
+              <strong>{{ i.user.name }}</strong><br>
+              {{ i.user.email }}<br>
+              {{ i.user.phone }}
+            </td>
+
+            <td class="text-center">{{ i.date }}</td>
+
+            <td class="text-center">
+              <span class="badge bg-success px-3 py-2">
+                ✔ Completed
+              </span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">
+              No completed works found
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

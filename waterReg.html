@@ -1,0 +1,168 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<style>
+  /* ===== Professional Contact Styling ===== */
+  .contact {
+    background: #f8fafc;
+    padding: 100px 0;
+  }
+
+  .section-title h2 {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .section-title p {
+    max-width: 520px;
+    margin: 0 auto;
+    font-size: 15px;
+    color: #6b7280;
+  }
+
+  .contact-card {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+    padding: 48px 42px;
+  }
+
+  .form-control {
+    border-radius: 12px;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    font-size: 14.5px;
+  }
+
+  .form-control::placeholder {
+    color: #9ca3af;
+  }
+
+  .form-control:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    border: none;
+    border-radius: 999px;
+    padding: 13px 52px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+    transition: all 0.3s ease;
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(79, 70, 229, 0.35);
+  }
+
+  .row.g-4 {
+    row-gap: 22px;
+  }
+
+  @media (max-width: 576px) {
+    .contact {
+      padding: 70px 0;
+    }
+
+    .contact-card {
+      padding: 32px 26px;
+    }
+  }
+</style>
+
+<!-- ===== Registration Section ===== -->
+<section id="contact" class="contact">
+
+  <div class="container" data-aos="fade-up">
+
+    <!-- Section Heading -->
+    <div class="section-title text-center mb-5">
+      <h2>Register as Water Authority</h2>
+      <p>Please fill in the details below to create your account</p>
+    </div>
+
+    <div class="row justify-content-center">
+
+      <div class="col-lg-6 col-md-8 col-sm-10">
+
+        <div class="contact-card" data-aos="zoom-in">
+
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="row g-4">
+
+              <!-- Water Authority Name -->
+              <div class="col-md-6">
+                <input type="text" name="name" class="form-control"
+                       placeholder="Water Authority Name" required pattern="[A-Za-z ]+">
+              </div>
+
+              <!-- Email -->
+              <div class="col-md-6">
+                <input type="email" name="email" class="form-control"
+                       placeholder="Email Address" required>
+              </div>
+
+              <!-- Phone -->
+              <div class="col-md-6">
+                <input type="text"
+                       name="phone"
+                       class="form-control"
+                       maxlength="10"
+                       inputmode="numeric"
+                       pattern="[6789][0-9]{9}"
+                       required
+                       placeholder="Enter 10-digit mobile number">
+              </div>
+
+              <!-- Password -->
+              <div class="col-md-6">
+                <input type="password" name="password" class="form-control"
+                       placeholder="Create Password" required>
+              </div>
+
+              <!-- Place -->
+              <div class="col-md-6">
+                <input type="text" name="place" class="form-control"
+                       placeholder="Place" required>
+              </div>
+
+              <!-- District -->
+              <div class="col-md-6">
+                <input type="text" name="district" class="form-control"
+                       placeholder="District" required>
+              </div>
+
+              <!-- Address -->
+              <div class="col-12">
+                <textarea name="address" class="form-control"
+                          rows="3" placeholder="Address" required></textarea>
+              </div>
+
+              <!-- Submit -->
+              <div class="col-12 text-center pt-3">
+                <button type="submit" class="btn-submit">
+                  Register
+                </button>
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

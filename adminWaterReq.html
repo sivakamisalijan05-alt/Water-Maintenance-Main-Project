@@ -1,0 +1,103 @@
+{% extends 'adminHome.html' %} 
+{% block content %}
+
+<style>
+  .complaint-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .complaint-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15);
+  }
+</style>
+
+<section class="section light-background py-5">
+
+  <!-- Title -->
+  <div class="container text-center mb-5" data-aos="fade-up">
+    <h2 class="fw-bold">Water Requests</h2>
+    <p class="text-muted">All Water Requests submitted by citizens</p>
+  </div>
+
+  <div class="container">
+    <div class="row g-4">
+
+      {% for i in data %}
+      <div class="col-lg-6 col-md-6" data-aos="fade-up">
+        <div class="complaint-card bg-white p-4 rounded shadow-sm border-start border-4 border-primary h-100 d-flex flex-column">
+
+   
+
+          <!-- Details -->
+          <div class="flex-grow-1">
+            <p class="mb-2"><strong>📍 Location:</strong> {{ i.location }}</p>
+            <p class="mb-2"><strong>📝 Description:</strong> {{ i.description }}</p>
+            <p class="mb-2"><strong>📝 Water/ litre:</strong> {{ i.ltr }}</p>
+            <p class="mb-2"><strong>📅 Date:</strong> {{ i.date }}</p>
+            <p class="mb-2">
+              <strong>👤 Citizen:</strong>
+              {{ i.user.name }}<br>
+              {{ i.user.email }} | {{ i.user.phone }}
+            </p>
+          </div>
+
+          <!-- Authority Section -->
+          {% if i.authority == None %}
+          <div class="mt-4 border-top pt-3">
+            <form method="post" class="d-flex gap-2 align-items-end">
+              {% csrf_token %}
+              
+              <div class="flex-grow-1">
+                <label class="form-label fw-semibold">Assign Authority</label>
+                <select name="authority_id" class="form-select" required>
+                  <option value="" disabled selected>Choose Authority</option>
+                  {% for a in auth %}
+                  <option value="{{ a.id }}">{{ a.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <input type="hidden" name="complaint_id" value="{{ i.id }}">
+
+              <button type="submit" class="btn btn-primary px-4">
+                Assign
+              </button>
+            </form>
+          </div>
+          {% else %}
+          <div class="mt-4">
+            <span class="badge bg-success px-3 py-2">
+             Authority : Assigned to {{ i.authority.name }}
+            </span>
+          </div>
+          {% endif %}
+          {% if i.delivery != None %}
+          <div class="mt-4">
+            <span class="badge bg-success px-3 py-2">
+             Delivery Staff : Assigned to {{ i.delivery.name }}
+            </span>
+          </div>
+          {% endif %}
+
+          {% if i.delivery_status != None %}
+          <div class="mt-4">
+            <span class="badge bg-success px-3 py-2">
+             Delivery Status : {{ i.delivery_status }}
+            </span>
+          </div>
+          {% endif %}
+
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center">
+        <p class="fs-5 text-muted">No complaints found</p>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

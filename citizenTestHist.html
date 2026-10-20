@@ -1,0 +1,173 @@
+{% extends 'citizenHome.html' %}
+{% block content %}
+
+<style>
+  /* ===== Table Container Styling ===== */
+  .table-container {
+    background: #fff;
+    padding: 25px 20px;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    overflow-x: auto;
+  }
+
+  /* ===== Table Styling ===== */
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-width: 900px;
+  }
+
+  th, td {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 14px 12px;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  th {
+    background-color: #4f46e5;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  tr:hover {
+    background-color: #f9fafb;
+  }
+
+  td:last-child {
+    text-align: center;
+  }
+
+  /* ===== Status Badges ===== */
+  .badge-status {
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+    min-width: 75px;
+    text-align: center;
+  }
+
+  .Requested { background: #f59e0b; color: #fff; }
+  .InProgress { background: #3b82f6; color: #fff; }
+  .Completed { background: #10b981; color: #fff; }
+
+  /* ===== Buttons ===== */
+  a.btn-report, button.upload-btn {
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    border: 1px solid #4f46e5;
+    color: #4f46e5;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  a.btn-report:hover, button.upload-btn:hover {
+    background: #4f46e5;
+    color: #fff;
+    border-color: #4f46e5;
+  }
+
+  /* ===== File Input Styling ===== */
+  input[type="file"] {
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 13px;
+    width: 100%;
+  }
+
+  form.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    table {
+      min-width: 700px;
+    }
+    th, td {
+      padding: 12px 8px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    table {
+      min-width: 500px;
+    }
+    th, td {
+      padding: 10px 6px;
+    }
+  }
+
+</style>
+
+<section class="section light-background py-5">
+
+  <!-- Title -->
+  <div class="container text-center mb-5" data-aos="fade-up">
+    <h2 class="fw-bold">Water Quality Test History</h2>
+    <p class="text-muted">View all test details</p>
+  </div>
+
+  <div class="container table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Authority</th>
+          <th>Source Type</th>
+          <th>Location</th>
+          <th>Purpose</th>
+          <th>Description</th>
+          <th>Requested On</th>
+          <th>Report</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in data %}
+        <tr>
+          <td>
+            {% if i.authority != None %}
+            {{ i.authority.name }}<br>
+            <span class="text-muted">{{ i.authority.email }}</span><br>
+            <span class="text-muted">{{ i.authority.phone }}</span>
+            {% else %}
+            <span class="text-muted">Not Assigned to Authority</span>
+            {% endif %}
+          </td>
+          <td>{{ i.source_type }}</td>
+          <td>{{ i.location }}</td>
+          <td>{{ i.purpose }}</td>
+          <td>{{ i.description }}</td>
+          <td>{{ i.date|date:"d M Y, H:i" }}</td>
+          <td>
+            {% if i.report %}
+              <a href="static/media/{{ i.report }}" target="_blank" class="btn-report">View Report</a>
+            {% else %}
+               <span class="text-muted">Report not added</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-center text-muted">You haven't requested for testing water</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+{% endblock %}

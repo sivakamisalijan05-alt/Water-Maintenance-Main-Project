@@ -1,0 +1,142 @@
+{% extends 'citizenHome.html' %}
+{% block content %}
+
+<style>
+  .complaint-table {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 25px 55px rgba(0,0,0,0.08);
+  }
+
+  .complaint-table thead {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #ffffff;
+  }
+
+  .complaint-table th {
+    padding: 14px;
+    font-size: 14.5px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .complaint-table td {
+    padding: 12px;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  .complaint-table tbody tr:hover {
+    background-color: #f1f5ff;
+  }
+
+  .complaint-img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .status-badge {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .status-requested { background: #fde68a; color: #92400e; }
+  .status-accepted  { background: #bfdbfe; color: #1e40af; }
+  .status-work      { background: #bbf7d0; color: #065f46; }
+  .status-completed { background: #86efac; color: #065f46; }
+
+</style>
+
+<section class="section light-background py-5">
+
+  <!-- Title -->
+  <div class="container text-center mb-4">
+    <h2 class="fw-bold">My Complaints</h2>
+    <p class="text-muted">Track the progress of complaints you have registered</p>
+  </div>
+
+  <div class="container">
+    <div class="table-responsive complaint-table">
+      <table class="table table-bordered table-hover mb-0">
+
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Photo</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Authority</th>
+            <th>Repair</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for i in data %}
+          <tr>
+
+            <td class="text-center">{{ forloop.counter }}</td>
+
+            <td class="text-center">
+              {% if i.photo %}
+                <a href="static/media/{{ i.photo }}" target="_blank">
+                  <img src="static/media/{{ i.photo }}" class="complaint-img">
+                </a>
+              {% else %}
+                <span class="text-muted">No Image</span>
+              {% endif %}
+            </td>
+
+            <td>{{ i.location }}</td>
+
+            <td>{{ i.description|truncatechars:40 }}</td>
+
+            <td class="text-center">{{ i.date|date:"d M Y" }}</td>
+
+            <td class="text-center">
+              {% if i.authority %}
+                {{ i.authority.name }}
+              {% else %}
+                <span class="text-muted">Not Assigned</span>
+              {% endif %}
+            </td>
+
+            <td class="text-center">
+              {% if i.repair %}
+                {{ i.repair.name }}
+              {% else %}
+                <span class="text-muted">Not Assigned</span>
+              {% endif %}
+            </td>
+
+            <td class="text-center">
+              {% if i.repair_status %}
+                <span class="status-badge status-completed">{{ i.repair_status }}</span>
+              {% else %}
+                <span class="status-badge status-requested">Requested</span>
+              {% endif %}
+            </td>
+
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="8" class="text-center text-muted py-4">
+              You haven’t registered any complaints yet
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'citizenHome.html' %}
+{% block content %}
+
+<style>
+  .contact {
+    background: #f8fafc;
+    padding: 100px 0;
+  }
+
+  .section-title h2 {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .section-title p {
+    max-width: 520px;
+    margin: 0 auto;
+    font-size: 15px;
+    color: #6b7280;
+  }
+
+  .contact-card {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+    padding: 48px 42px;
+  }
+
+  .form-control, .form-select {
+    border-radius: 12px;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    font-size: 14.5px;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    border: none;
+    border-radius: 999px;
+    padding: 13px 52px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    transition: all 0.3s ease;
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(79, 70, 229, 0.35);
+  }
+</style>
+
+<section class="contact">
+
+  <div class="container" data-aos="fade-up">
+
+    <!-- Heading -->
+    <div class="section-title text-center mb-5">
+      <h2>Water Quality Test Request</h2>
+      <p>Submit sample details to test the quality of your water</p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-7 col-md-9 col-sm-11">
+
+        <div class="contact-card" data-aos="zoom-in">
+
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="row g-4">
+
+   
+
+              <!-- Source Type -->
+              <div class="col-md-12">
+                <label class="form-label fw-semibold">Source Type</label>
+                <select name="source_type" class="form-select" required>
+                  <option value="" selected disabled>-- Select Source --</option>
+                  <option>Well</option>
+                  <option>Borewell</option>
+                  <option>River</option>
+                  <option>Tank</option>
+                  <option>Tap</option>
+                  <option>Lake</option>
+                </select>
+              </div>
+
+              <!-- Location -->
+              <div class="col-md-12">
+                <label class="form-label fw-semibold">Sample Location</label>
+                <input type="text" name="location" class="form-control"
+                       placeholder="Enter sample location" required>
+              </div>
+           
+
+              <!-- Purpose -->
+              <div class="col-md-12">
+                <label class="form-label fw-semibold">Purpose of Test</label>
+                <select name="purpose" class="form-select" required>
+                  <option value="" selected disabled>-- Select Purpose --</option>
+                  <option>Drinking</option>
+                  <option>Irrigation</option>
+                  <option>Industrial</option>
+                </select>
+              </div>
+
+              <!-- Description -->
+              <div class="col-12">
+                <label class="form-label fw-semibold">Remarks / Description</label>
+                <textarea name="description" class="form-control"
+                          rows="3" placeholder="Any additional notes" required> </textarea>
+              </div>
+
+              <!-- Submit -->
+              <div class="col-12 text-center pt-3">
+                <button type="submit" class="btn-submit">
+                  Submit Request
+                </button>
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}
